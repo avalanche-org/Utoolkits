@@ -2,17 +2,19 @@
  * copyright (c), 2022  Umar <jukoo>  jUmarB@proton.mail 
  */ 
 
+const MAX_NMLIB= 0xf  
 
 __nodemodules__ : 
-[ 
+[
+    {log}= console , 
     {createServer , Server}  =  require("http"),  
-    xpress      =  require("express")  
-] = process.argv.splice(0xf)   
+    xpress      =  require("express"),  
+    xpressfu    =  require("express-fileupload"), 
+    { init }    =  require("./lib/utils") 
+] = process.argv.splice(MAX_NMLIB)   
 
 
-
-__app_setting__:
-
+__app_setting__:init()  
 app  = xpress() 
 port = process.env?.PORT || 3000   
 
@@ -25,7 +27,7 @@ app
 .use(xpress.static(__dirname)) 
 .use(xpress.json())
 .use(xpress.urlencoded({ extended: true } ))
-//.use(xpressfu({}))
+.use(xpressfu({}))
 
 
 __server_instance__:  
@@ -38,7 +40,8 @@ app
     __responce.render("index.ejs")   
 })
 ["post"]("/", (__request ,  __responce   , __next) => {
-    group(__request.body)    
+    const  Ufiles =  __request.files  
+    log(Ufiles)  
     __responce.status(201).json( { msg : "data well received"})          
 })
 
@@ -46,7 +49,7 @@ app
 
 __server_listen__ : 
 server_handler
-["listen"](port  , "0.0.0.0")
+["listen"](port  , "0.0.0.0"  ,  _=>  log (server_handler.address()))
 
 
 

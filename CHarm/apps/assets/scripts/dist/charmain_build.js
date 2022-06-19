@@ -15,7 +15,7 @@
   \*********************************/
 /***/ (() => {
 
-eval("console.log(\"hi charm\") \n\n\n//# sourceURL=webpack://CHarm/./assets/scripts/charm.js?");
+eval("\n\nconst _ =  document \n\nconst  [  \n    applycharm\n    ,form\n\n] = [\n    _.querySelector(\".autocorrect\")   // applycharm  \n    ,_.getElementsByTagName(\"form\")      // form  \n    ]\n\n\n\n\nconst   charm    = {  \n\n    main  () {  \n        applycharm.addEventListener(\"click\" , evt => {\n            evt.preventDefault()  \n            const payload  =  { \n                method :\"POST\" , \n                body:new FromData(form) \n            }\n            const  status = fetch(\"/\", { ...payload}) \n            console.log(status) \n        }) \n    } \n}\n\n\n\n\n\n//# sourceURL=webpack://CHarm/./assets/scripts/charm.js?");
 
 /***/ })
 
