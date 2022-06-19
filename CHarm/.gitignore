@@ -1,0 +1,5 @@
+apps/assets/styles/semantic/* 
+cat << ER >> .gitignore
+apps/assets/styles/semantic/* 
+
+apps/assets/scripts/dist/*
