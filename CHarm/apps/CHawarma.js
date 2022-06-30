@@ -10,11 +10,11 @@ __nodemodules__ :
     {createServer , Server}  =  require("http"),  
     xpress      =  require("express"),  
     xpressfu    =  require("express-fileupload"), 
-    { init }    =  require("./lib/utils") 
+    { sandbox }    =  require("./lib/utils") 
 ] = process.argv.splice(MAX_NMLIB)   
 
 
-__app_setting__:init()  
+__app_setting__: 
 app  = xpress() 
 port = process.env?.PORT || 3000   
 
@@ -49,7 +49,13 @@ app
 
 __server_listen__ : 
 server_handler
-["listen"](port  , "0.0.0.0"  ,  _=>  log (server_handler.address()))
+["listen"](port  , "0.0.0.0"  ,  _=>   { 
+
+    log (server_handler.address()) 
+    sandbox() 
+
+
+})
 
 
 
