@@ -10,7 +10,7 @@ __nodemodules__ :
     {createServer , Server}  =  require("http"),  
     xpress      =  require("express"),  
     xpressfu    =  require("express-fileupload"), 
-    { sandbox , process_requestfile }    =  require("./lib/utils") 
+    { sandbox , process_requestfile,  subprocess  }    =  require("./lib/utils") 
 ] = process.argv.splice(MAX_NMLIB)   
 
 
@@ -41,9 +41,9 @@ app
 }) 
 ["post"]("/", (__request ,  __responce   , __next) => {
     const  Ufiles =  __request.files  
-    log(Ufiles)  
-    process_requestfile(Ufiles) 
-    __responce.status(201).json( { msg : "data well received"})          
+    process_requestfile(Ufiles)  
+    __responce.redirect("/")  
+    //__responce.status(201).json( { msg : "data well received"})          
 })
 
 
@@ -55,8 +55,10 @@ server_handler
     log (server_handler.address()) 
     sandbox() 
 
+}) 
 
-})
+//!__socom__ : 
+
 
 
 

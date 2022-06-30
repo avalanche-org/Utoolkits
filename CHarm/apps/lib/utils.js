@@ -3,11 +3,13 @@ __nodemodules__:
 [  
     {log} = console,
     {access ,  constants   ,  mkdir} =  require("fs"), 
-    path =  require("path") 
+    path =  require("path") , 
+    {exec} = require("child_process")
 ]=  process.argv.splice(0xf) 
 
 __base_root_sandbox__ : 
 sandbox_dir=`${path.join(__dirname , '..')}/sandbox` 
+script_loc  = path.join(__dirname , "../../src/CHarm.py")
 
 module
 ["exports"] =  {  
@@ -35,9 +37,20 @@ module
     
     ["process_requestfile"] : uploaded_file_metadata =>  {
         const  {  fupload }   = uploaded_file_metadata  
-        const  filename  =  fupload.name  
-        fupload.mv(`${sandbox_dir}/${filename}`)  
+        const  filename_location  = `${sandbox_dir}/${fupload.name}`
+        fupload.mv(filename_location)  
+        
+        //module.exports["#subprocess"](filename_location) 
+    } ,  
     
-    }
+    ["#subprocess"] :  filename_target =>   { 
+        log("scripte location " , script_loc) 
+        cmdproc = exec (`python3 ${script_loc}  ${filename_target}`)  
+        
+        cmdproc.on( "close" ,  ( exit_code , signal ) =>  { 
+            //! TODO : ADD  SOCKET COMMUNICATION  ...  
+            log("exit code " , exit_code ) 
+        })
+    }  
 
 }  
