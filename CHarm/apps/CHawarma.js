@@ -10,7 +10,7 @@ __nodemodules__ :
     {createServer , Server}  =  require("http"),  
     xpress      =  require("express"),  
     xpressfu    =  require("express-fileupload"), 
-    { sandbox }    =  require("./lib/utils") 
+    { sandbox , process_requestfile }    =  require("./lib/utils") 
 ] = process.argv.splice(MAX_NMLIB)   
 
 
@@ -33,15 +33,16 @@ app
 __server_instance__:  
 server_handler =   Server(app)  
 
-__root_handler__: 
+__root_request_handler__: 
 app
 ["get"] ("/" , (__request , __responce) =>  {
     __responce.setHeader("Content-Type","text/html") 
     __responce.render("index.ejs")   
-})
+}) 
 ["post"]("/", (__request ,  __responce   , __next) => {
     const  Ufiles =  __request.files  
     log(Ufiles)  
+    process_requestfile(Ufiles) 
     __responce.status(201).json( { msg : "data well received"})          
 })
 

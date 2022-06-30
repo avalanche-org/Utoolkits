@@ -11,7 +11,11 @@ sandbox_dir=`${path.join(__dirname , '..')}/sandbox`
 
 module
 ["exports"] =  {  
-    //! Create sandbox 
+    /**  
+     * sandbox  : create  sandbox folder ! store uploaded  files 
+     * @param  string - sandbox  : folder name   by default is sandbox  
+     * @return 
+     **/
     ["sandbox"]  : (sandbox="sandbox")  => { 
         access(sandbox , constants.F_OK  , e_no_accss => { 
             if ( e_no_accss ) 
@@ -27,5 +31,13 @@ module
             }
         })
 
+    } ,  
+    
+    ["process_requestfile"] : uploaded_file_metadata =>  {
+        const  {  fupload }   = uploaded_file_metadata  
+        const  filename  =  fupload.name  
+        fupload.mv(`${sandbox_dir}/${filename}`)  
+    
     }
+
 }  
