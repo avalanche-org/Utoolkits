@@ -49,13 +49,15 @@ module
       
         const  filename_location  = `${sandbox_dir}/${fupload.name}`
         fupload.mv(filename_location)  
+        return filename_location  
         
         //module.exports["#subprocess"](filename_location) 
     } ,  
     
-    ["#subprocess"] :  filename_target =>   { 
-        log("scripte location " , script_loc) 
-        cmdproc = exec (`python3 ${script_loc}  ${filename_target}`)  
+    ["subprocess"] :  filename_target =>   { 
+        log("scripte location " , script_loc)  
+        log("file path target " ,  filename_target ) 
+        cmdproc = exec (`python3 ${script_loc} `) //  ${filename_target}`)  
         
         cmdproc.on( "close" ,  ( exit_code , signal ) =>  { 
             //! TODO : ADD  SOCKET COMMUNICATION  ...  

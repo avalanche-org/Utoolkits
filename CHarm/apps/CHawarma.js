@@ -2,7 +2,7 @@
  * copyright (c), 2022  Umar <jukoo>  jUmarB@proton.mail 
  */ 
 
-const MAX_NMLIB= 0xf  
+const MAX_NMLIB= 0xf    
 
 __nodemodules__ : 
 [
@@ -17,7 +17,8 @@ __nodemodules__ :
 
 __app_setting__: 
 app  = xpress() 
-port = process.env?.PORT || 3000   
+port = process.env?.PORT || 3000
+filepathref =  (void function () { return }()) 
 
 
 __midwarsetting__ :  
@@ -34,6 +35,7 @@ app
 __server_instance__:  
 server_handler =   Server(app)  
 
+
 __root_request_handler__: 
 app
 ["get"] ("/" , (__request , __responce) =>  {
@@ -42,8 +44,7 @@ app
 }) 
 ["post"]("/", (__request ,  __responce   , __next) => {
     const  Ufiles =  __request.files  
-   
-    process_requestfile(Ufiles)  
+    filepathref = process_requestfile(Ufiles)  
     __responce.redirect("/")  
     //__responce.status(201).json( { msg : "data well received"})          
 })
@@ -53,17 +54,20 @@ app
 __server_listen__ : 
 server_handler
 ["listen"](port  , "0.0.0.0"  ,  _=>   { 
-
     log (server_handler.address()) 
-    sandbox() //!auto generate the sandbox    
 
+    //!auto generate the sandbox    
+    sandbox()  
 }) 
 
 __SOCKET_XCHANGE__ :   
-ios =  new io_socom(server_handler) 
-ios
+new io_socom(server_handler) 
 ["on"]("connection" ,   socket => {  
-    socket.on("init"  ,  _  => log (_))     
+    socket.on("init"  ,  _  => log (_)) 
+
+    socket.on("apply::autocorrection" ,   _   => { 
+        subprocess(filepathref)  
+    }) 
 }) 
 
 

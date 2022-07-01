@@ -16,21 +16,26 @@ const _ =  document ,  {log} =  console ,
     ,_.getElementsByTagName("form")       // form  
 ]
 
-log(form)  
 __DOM_MANIPULATION__  :   
-
-form[0].addEventListener("submit" , evt => {
+form[0].addEventListener("submit" , async evt => {
     evt.preventDefault()  
-    formetadata  = form[0]  
+    formetadata  = form[0] 
+
     const payload  =  { 
         method :"POST" , 
         body:new FormData(formetadata)  
         
     } 
-    log(payload) 
-    const  status = fetch("/", { ...payload}) 
-    console.log(status) 
-    
+    const  stat  = await fetch("/", { ...payload})
+     
+    if ( stat.status == 200 )  
+    {
+        //!  send socket signal  to start processing  
+        ua_socket_communication.emit("apply::autocorrection" , true ) 
+        
+        //! TODO :  ADD  SOME SPINER ANIMATION  ...  
+    }
+   
 }) 
 
 __SOCKET_COM_HANDLER__ :  
