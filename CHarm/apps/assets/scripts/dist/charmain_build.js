@@ -15,7 +15,7 @@
   \*********************************/
 /***/ (() => {
 
-eval("\n\nconst _ =  document \n\nconst  [  \n    applycharm\n    ,form\n\n] = [\n    _.querySelector(\".autocorrect\")   // applycharm  \n    ,_.getElementsByTagName(\"form\")      // form  \n    ]\n\n\n\n\nconst   charm    = {  \n\n    main  () {  \n        applycharm.addEventListener(\"submit\" , evt => {\n            evt.preventDefault()  \n            const payload  =  { \n                method :\"POST\" , \n                body:new FromData(form) \n            }\n            const  status = fetch(\"/\", { ...payload}) \n            console.log(status) \n        }) \n    } \n}\n\n\n\n\n\n//# sourceURL=webpack://CHarm/./assets/scripts/charm.js?");
+eval("/**\n * charm  for CHarm  \n * copyright(c) , 2022 , Umar <jUmarB@protonmail.com  \n */\n\n\n__WEB_SOCKET_USER_AGENT__ :  \nua_socket_communication  =  io()  \n\nconst _ =  document ,  {log} =  console , \n[  \n    applycharm\n    ,form \n] = [\n    _.querySelector(\".autocorrect\")   // applycharm \n    ,_.getElementsByTagName(\"form\")       // form  \n]\n\nlog(form)  \n__DOM_MANIPULATION__  :   \n\nform[0].addEventListener(\"submit\" , evt => {\n    evt.preventDefault()  \n    formetadata  = form[0]  \n    const payload  =  { \n        method :\"POST\" , \n        body:new FormData(formetadata)  \n        \n    } \n    log(payload) \n    const  status = fetch(\"/\", { ...payload}) \n    console.log(status) \n    \n}) \n\n__SOCKET_COM_HANDLER__ :  \nua_socket_communication.emit(\"init\", navigator.userAgent)  \n\n\n\n\n\n\n//# sourceURL=webpack://CHarm/./assets/scripts/charm.js?");
 
 /***/ })
 

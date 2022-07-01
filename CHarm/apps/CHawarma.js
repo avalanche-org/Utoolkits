@@ -10,6 +10,7 @@ __nodemodules__ :
     {createServer , Server}  =  require("http"),  
     xpress      =  require("express"),  
     xpressfu    =  require("express-fileupload"), 
+    io_socom    =  require("socket.io")?.Server ,  
     { sandbox , process_requestfile,  subprocess  }    =  require("./lib/utils") 
 ] = process.argv.splice(MAX_NMLIB)   
 
@@ -41,6 +42,7 @@ app
 }) 
 ["post"]("/", (__request ,  __responce   , __next) => {
     const  Ufiles =  __request.files  
+   
     process_requestfile(Ufiles)  
     __responce.redirect("/")  
     //__responce.status(201).json( { msg : "data well received"})          
@@ -53,12 +55,16 @@ server_handler
 ["listen"](port  , "0.0.0.0"  ,  _=>   { 
 
     log (server_handler.address()) 
-    sandbox() 
+    sandbox() //!auto generate the sandbox    
 
 }) 
 
-//!__socom__ : 
-
+__SOCKET_XCHANGE__ :   
+ios =  new io_socom(server_handler) 
+ios
+["on"]("connection" ,   socket => {  
+    socket.on("init"  ,  _  => log (_))     
+}) 
 
 
 

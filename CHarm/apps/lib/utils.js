@@ -1,3 +1,7 @@
+/** 
+ * Utils  for CHarm  
+ * copyright(c) 2022 , Umar  <jUmarB@protonmail.com>  
+ */ 
 
 __nodemodules__: 
 [  
@@ -7,9 +11,12 @@ __nodemodules__:
     {exec} = require("child_process")
 ]=  process.argv.splice(0xf) 
 
+//! NOTE : Static  configuration  
 __base_root_sandbox__ : 
 sandbox_dir=`${path.join(__dirname , '..')}/sandbox` 
 script_loc  = path.join(__dirname , "../../src/CHarm.py")
+
+
 
 module
 ["exports"] =  {  
@@ -36,7 +43,10 @@ module
     } ,  
     
     ["process_requestfile"] : uploaded_file_metadata =>  {
-        const  {  fupload }   = uploaded_file_metadata  
+        if  (! uploaded_file_metadata?.fupload )  return  
+
+        const  {  fupload }   = uploaded_file_metadata
+      
         const  filename_location  = `${sandbox_dir}/${fupload.name}`
         fupload.mv(filename_location)  
         
