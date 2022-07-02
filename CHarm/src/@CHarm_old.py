@@ -79,8 +79,8 @@ for ind in list(g.index):
 data_final = pd.concat(data_list,axis = 0)
 data_final  #Ici on est pret à afficher maintenant le fichier sorti à harmoniser :)
 
-output_filename=f"CorrectionEpidetHarmonisationDonnees{spreadsheet_target}.xlsx"
-sys.exit(10) 
+output_filename=f"charm_{spreadsheet_target}.xlsx"
 data_final.to_excel(output_filename) # le fichier final à enregistrer et upload sur google sheet pour le nettoyage collaboratif
+sys.exit(10) 
 
 
