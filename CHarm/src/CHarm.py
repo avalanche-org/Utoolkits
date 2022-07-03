@@ -2,7 +2,7 @@
 
 """ 
 Correction and Harmonization   
-Copyright(c) 2020 2021  , Arame Thiam  
+Copyright(c) 2020 2021  , Arame Thiam <arramthiamm@gmail.com> 
 Copyright(c) 2022 Umar  <jUmarB@protonmail.com>  
 """ 
 
@@ -65,7 +65,9 @@ def main  ()  :
     sprdsheat  = argv.file  
     if  sprdsheat is  None :  
         sys.exit(1) 
-         
+    
+    filename =  sprdsheat.split("/")[-1]  
+    
     charm =  CHarm(sprdsheat) 
     epids  =  charm.select("no_terrain")  
     epids_frequency_gt2 = epids[epids["no_terrain"].__ge__(2)]    
@@ -104,7 +106,7 @@ def main  ()  :
         data_list.__iadd__([dat])
     
     data_final = pd.concat(data_list,axis = 0)
-    output_filename=f"CH@{argv.file[:-4]}.xlsx"
+    output_filename=f"CH@{filename[:-4]}.xlsx"
     data_final.to_excel(output_filename)
 
 
