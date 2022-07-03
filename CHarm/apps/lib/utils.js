@@ -6,7 +6,7 @@
 __nodemodules__: 
 [  
     {log} = console,
-    {access ,  constants   ,  mkdir} =  require("fs"), 
+    {access ,  constants   ,  mkdir , readdir } =  require("fs"), 
     path =  require("path") , 
     {exec} = require("child_process")
 ]=  process.argv.splice(0xf) 
@@ -54,15 +54,36 @@ module
         //module.exports["#subprocess"](filename_location) 
     } ,  
     
-    ["subprocess"] :  filename_target =>   { 
+    ["subprocess"] : ( filename_target ,  socket )  =>   { 
         log("scripte location " , script_loc)  
-        log("file path target " ,  filename_target ) 
-        cmdproc = exec (`python3 ${script_loc} `) //  ${filename_target}`)  
-        
+        log("file path target " ,  filename_target )
+        if  ( filename_target ==  ( void function () {return}()) ) 
+        {
+            log("is undefined") 
+            socket.emit("empty" , null) 
+        }
+        filename_shortcut = filename_target.split("/").at(-1)  
+        log("fshc" , filename_shortcut) 
+
+        cmdline =`python3 ${script_loc} -f ${filename_target}` 
+        log(cmdline)
+        cmdproc = exec(cmdline) 
         cmdproc.on( "close" ,  ( exit_code , signal ) =>  { 
-            //! TODO : ADD  SOCKET COMMUNICATION  ...  
-            log("exit code " , exit_code ) 
+            log("exit code " , exit_code )  
+            //! TODO :  SEND EVENT ON FAILLURE TO ALERT USER
+            if ( exit_code == 0 ) 
+            {
+                readdir (path.join(__dirname , "../")   , {withFileTypes  : true } , ( error ,  dirent  ) => {
+                    if  (error )  reject (error )
+                    let file =  dirent.filter ( dirent =>  dirent["isFile"]())
+                    .filter(file =>  file.name.startsWith("CH@")) 
+
+                    socket.emit("charm::done" , file.at(0).name )   
+
+                })
+            }
         })
+        
     }  
 
 }  

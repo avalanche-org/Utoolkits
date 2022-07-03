@@ -45,7 +45,7 @@
             <h3 class="ui horizontal divider header teal">Upload Your  Spread Sheet</h3> 
           <div class="ui right floated icon  input">
             <i class="file icon"></i>
-                <input name="fupload" type="file" accept=".xlsx" multiple placeholder="Upload Your Sheet"  class="ui input focus"> 
+                <input name="fupload" type="file" accept=".xlsx,.csv" multiple placeholder="Upload Your Sheet"  class="ui input focus"> 
           </div>
         </div>
         <div class="field">
@@ -63,12 +63,12 @@
 
     </form>
 
-    <div class="ui message">
-      Download  <a href="#">filename </a>
-    </div>
   </div>
 </div>
 
+    <div class="ui active ">   
+        <div class="ui large text loader"> Preparing file</div> 
+    </div>
     <script src="socket.io/socket.io.js"></script> 
     <script src="scripts/dist/charmain_build.js" > </script> 
 </body>

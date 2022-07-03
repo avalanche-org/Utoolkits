@@ -48,8 +48,16 @@ app
     __responce.redirect("/")  
     //__responce.status(201).json( { msg : "data well received"})          
 })
-
-
+["get"]("/download/:dfile" , ( __request ,__responce , __next ) => {
+         
+    __responce.download(`${__request.params.dfile}` , __request.params.dfiles  , err  => { 
+        if(err)  
+        { 
+            __responce.status(404).send( {  message  : `you tried to download an inexistant file `}) 
+        }
+    })
+})
+["use"]((__request , __responce , __next)   =>  tx.redirect("/"))
 
 __server_listen__ : 
 server_handler
@@ -66,7 +74,7 @@ new io_socom(server_handler)
     socket.on("init"  ,  _  => log (_)) 
 
     socket.on("apply::autocorrection" ,   _   => { 
-        subprocess(filepathref)  
+        subprocess(filepathref , socket)  
     }) 
 }) 
 
