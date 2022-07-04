@@ -12,12 +12,14 @@ const _ =  document ,  {log} =  console ,
     applycharm
     ,form
     ,activeloader 
+    ,errmsg 
 ] = [
     _.querySelector(".autocorrect")   // applycharm 
     ,_.getElementsByTagName("form")       // form  
-    ,_.querySelector(".active")  
+    ,_.querySelector(".active") 
+    ,_.querySelector(".error") 
 ]
-log(activeloader) 
+
 __DOM_MANIPULATION__  :   
 form[0].addEventListener("submit" , async evt => {
     evt.preventDefault()  
@@ -32,10 +34,8 @@ form[0].addEventListener("submit" , async evt => {
      
     if ( stat.status == 200 )  
     {
-        //!  send socket signal  to start processing  
         ua_socket_communication.emit("apply::autocorrection" , true ) 
         
-        //! TODO :  ADD  SOME SPINER ANIMATION  ... 
         if (!activeloader.classList.contains("dimmer")) 
             activeloader.classList.add("dimmer")
     }
@@ -49,18 +49,36 @@ stop_animation_loader  =  () => {
 
 __SOCKET_COM_HANDLER__ :  
 ua_socket_communication.emit("init", navigator.userAgent)  
-ua_socket_communication.on("charm::done" , async assets => { 
+
+ua_socket_communication.on("charm::done" , async  metaObject   => { 
     stop_animation_loader()
-    //! todo : auto download
+    if  ( !errmsg.classList.contains("hidden")) 
+    { 
+        errmsg.classList.add("hidden") 
+        //! get back default  linera gradien 
+        _.body.style.backgroundImage="linear-gradient(to bottom right , teal, yellow)"
+    }
+    const assets  =  metaObject.at(0)   
     const  retrive_native_url  =  await fetch(`/download/${assets}`) 
     let  hidden_link  = _.createElement('a') 
     hidden_link.href =  retrive_native_url.url   
     hidden_link.download = assets 
     _.body.appendChild(hidden_link)
     hidden_link.click() 
-    hidden_link.remove() 
+    hidden_link.remove()  
+    setTimeout ( _=>  { ua_socket_communication.emit("charm::destroy" ,  metaObject) }  ,500)  
 }) 
-ua_socket_communication.on("empty" ,  ec => stop_animation_loader())
 
-
+ua_socket_communication.on("charm::empty" ,  _ => stop_animation_loader())
+ua_socket_communication.on("charm::error" ,  trace_error  =>  { 
+    const { exit_code  , signal }  = trace_error   
+    if  (errmsg.classList.contains("hidden"))  
+    {
+        errmsg.classList.remove("hidden") 
+        errmsg.textContent=`Un Probleme a ete detecte ! \ncode d'echec : ${exit_code}\n signal :  ${signal}`
+        
+    }
+    stop_animation_loader() 
+    _.body.style.backgroundImage="linear-gradient(to top left , red , yellow)"
+})
 

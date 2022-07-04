@@ -6,7 +6,7 @@
 __nodemodules__: 
 [  
     {log} = console,
-    {access ,  constants   ,  mkdir , readdir } =  require("fs"), 
+    {access ,  constants   ,  mkdir , readdir  ,rm} =  require("fs"), 
     path =  require("path") , 
     {exec} = require("child_process")
 ]=  process.argv.splice(0xf) 
@@ -15,7 +15,6 @@ __nodemodules__:
 __base_root_sandbox__ : 
 sandbox_dir=`${path.join(__dirname , '..')}/sandbox` 
 script_loc  = path.join(__dirname , "../../src/CHarm.py")
-
 
 
 module
@@ -42,6 +41,11 @@ module
 
     } ,  
     
+    /** 
+     * process_requestfile : move  uploaded file  to  sandbox directory 
+     * @param  Object  uploaded_file_metadata  -  global object  that contain  all information about  the  file  
+     * @return string - location  path where  the file  is  stored  
+     */
     ["process_requestfile"] : uploaded_file_metadata =>  {
         if  (! uploaded_file_metadata?.fupload )  return  
 
@@ -51,39 +55,54 @@ module
         fupload.mv(filename_location)  
         return filename_location  
         
-        //module.exports["#subprocess"](filename_location) 
     } ,  
     
+    /** 
+     * subprocess  :  processing  upload  file   
+     * @param  string  :  filename_target  -  the target file 
+     * @param  object <socket>  - socket  handler  to  emit  event  
+     */  
     ["subprocess"] : ( filename_target ,  socket )  =>   { 
-        log("scripte location " , script_loc)  
-        log("file path target " ,  filename_target )
+        
         if  ( filename_target ==  ( void function () {return}()) ) 
         {
-            log("is undefined") 
-            socket.emit("empty" , null) 
+            socket.emit("charm::empty" , null) 
         }
+        
         filename_shortcut = filename_target.split("/").at(-1)  
-        log("fshc" , filename_shortcut) 
 
         cmdline =`python3 ${script_loc} -f ${filename_target}` 
-        log(cmdline)
         cmdproc = exec(cmdline) 
         cmdproc.on( "close" ,  ( exit_code , signal ) =>  { 
+            
             log("exit code " , exit_code )  
-            //! TODO :  SEND EVENT ON FAILLURE TO ALERT USER
-            if ( exit_code == 0 ) 
+           
+            switch  (exit_code) 
             {
-                readdir (path.join(__dirname , "../")   , {withFileTypes  : true } , ( error ,  dirent  ) => {
-                    if  (error )  reject (error )
-                    let file =  dirent.filter ( dirent =>  dirent["isFile"]())
-                    .filter(file =>  file.name.startsWith("CH@")) 
+                case  0  : //!  on success   
+                    readdir (path.join(__dirname , "../")   , {withFileTypes  : true } , ( error ,  dirent  ) => {
+                        if  (error)  throw  error  
+                        let corrected_file   =  dirent.filter ( dirent =>  dirent["isFile"]())
+                            .filter(file =>  file.name.startsWith("CH@")) 
 
-                    socket.emit("charm::done" , file.at(0).name )   
-
-                })
+                        socket.emit("charm::done" ,  [ corrected_file.at(0).name , filename_target] )    
+                }) 
+                    break 
+               default  : 
+                    socket.emit("charm::error" ,   {  exit_code ,  signal  } )  
+                    break 
             }
+
         })
         
+    }, 
+    
+    ["autoclean"]  :   (  generated_file  , origne )  => {
+        
+        const destroy  = [  generated_file , origne ]  
+        for (let  file   of destroy )  
+        {
+            rm(file , destroy_error =>  {  if (destroy_error) throw destroy_error })  
+        }
     }  
-
 }  

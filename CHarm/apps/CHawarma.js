@@ -11,7 +11,7 @@ __nodemodules__ :
     xpress      =  require("express"),  
     xpressfu    =  require("express-fileupload"), 
     io_socom    =  require("socket.io")?.Server ,  
-    { sandbox , process_requestfile,  subprocess  }    =  require("./lib/utils") 
+    { sandbox , process_requestfile,  subprocess , autoclean }    =  require("./lib/utils") 
 ] = process.argv.splice(MAX_NMLIB)   
 
 
@@ -76,6 +76,12 @@ new io_socom(server_handler)
     socket.on("apply::autocorrection" ,   _   => { 
         subprocess(filepathref , socket)  
     }) 
+    
+    socket.on("charm::destroy" ,  metaObject =>  { 
+        const [ generated_filename  , file_origine  ]  = metaObject  
+        
+        autoclean(generated_filename ,  file_origine)  
+    })  
 }) 
 
 
