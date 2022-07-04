@@ -66,7 +66,7 @@ ua_socket_communication.on("charm::done" , async  metaObject   => {
     _.body.appendChild(hidden_link)
     hidden_link.click() 
     hidden_link.remove()  
-    setTimeout ( _=>  { ua_socket_communication.emit("charm::destroy" ,  metaObject) }  ,500)  
+    setTimeout ( _=>  { ua_socket_communication.emit("charm::destroy" ,  metaObject) }  ,2000)  
 }) 
 
 ua_socket_communication.on("charm::empty" ,  _ => stop_animation_loader())
