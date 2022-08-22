@@ -69,6 +69,7 @@ def main  ()  :
     filename =  sprdsheat.split("/")[-1]  
     
     charm =  CHarm(sprdsheat) 
+     
     epids  =  charm.select("no_terrain")  
     epids_frequency_gt2 = epids[epids["no_terrain"].__ge__(2)]    
 
@@ -77,7 +78,8 @@ def main  ()  :
             'no_terrain','age_annees','adresse',
             'sexe','telphone'
             ]
-    df   =  charm.build_subdf(*required_vars) 
+    df   =  charm.build_subdf(*required_vars)
+
     def CheckEpid(base_epidsdf  , worker_df , colnames ) : 
         data_list = []
         for row in list(base_epidsdf.index) : 
@@ -107,7 +109,12 @@ def main  ()  :
     
     data_final = pd.concat(data_list,axis = 0)
     output_filename=f"CH@{filename[:-4]}.xlsx"
+    
+    data_final= data_final.fillna("Missing") 
+    data_final.style.applymap(lambda x: "background-color:'yellow';color: red" if pd.isna(x) else '')
     data_final.to_excel(output_filename)
+      
+      
 
 
 if __name__.__eq__("__main__")  :

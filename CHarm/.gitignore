@@ -6,3 +6,5 @@ apps/assets/scripts/dist/*
 apps/sandbox/*
 src/database_1octobre2021_31mai2022_all.csv 
 src/dist/*
+tmps/
+CH@*
