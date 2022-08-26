@@ -36,6 +36,7 @@ def select (charm , colname_target  : str  , build_frame : bool = True  ) :
         raise  ValueError(f"{colname_target} is not defined")  
 
     return charm._xlsx[colname_target].value_counts().to_frame()  
+    #return charm._xlsx[colname_target] 
 
 def build_subdf ( charm ,  *args )  : 
     args =  set(args) 
@@ -70,25 +71,35 @@ def main  ()  :
     
     charm =  CHarm(sprdsheat) 
      
+    """
+    Create  a dataframe  that contain the frequency of  each epid  
+    """
     epids  =  charm.select("no_terrain")  
+    print(f"{epids}") 
     epids_frequency_gt2 = epids[epids["no_terrain"].__ge__(2)]    
-
+    #epids_frequency_gt2  = epids["no_terrain"] 
+    
+    print(f"@--> {epids.index}") 
+     
     required_vars = [
             'nom_patient','date_prelevement','no_ipd',
             'no_terrain','age_annees','adresse',
             'sexe','telphone'
             ]
+
     df   =  charm.build_subdf(*required_vars)
+    print(f"subdata frame  -> {df}")
 
     def CheckEpid(base_epidsdf  , worker_df , colnames ) : 
         data_list = []
+        print(f"epids index  {base_epidsdf.index}") 
         for row in list(base_epidsdf.index) : 
             df1 = worker_df[worker_df[colnames] == row][required_vars]  
             data_list.__iadd__([df1]) 
             
         return  pd.concat(data_list ,axis =0 )  
 
-    data  = CheckEpid(epids ,df , "no_terrain")
+    data  = CheckEpid(epids_frequency_gt2 ,df , "no_terrain")
 
     ages_collection   = [] 
     for age  in data["age_annees"]  :  
