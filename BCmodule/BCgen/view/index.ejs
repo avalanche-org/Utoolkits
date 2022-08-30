@@ -1,0 +1,80 @@
+<% /* %> 
+ ***************************************************************************
+ * Author : Mame Astou Gassama 
+ * Last Modified : 21 February 2022
+ * Description : This is the main page of The project
+ * 
+ * Copyright (C) ,2022 Umar  <jUmarB@protonmail.com>
+ ***************************************************************************
+<% */ %>
+<%-include("./header.ejs")%>  
+
+<div class="ui grid itemContent" id="BarCodeModula">
+    <div class="twelve wide stretched column">  
+        <div class="ui segment">
+            <div class="ui attached tab active" align="center">
+                <h1>14x4</h1>
+                <h4 class="ui horizontal divider header">
+                    <i class="tag icon"></i>
+                    Description
+                </h4>
+                <p>Génére 14 numéros par page, chaque numéro est répété sur 4 colonnes !</p> 
+                <br>
+                <div id="suggested" align="center"></div>
+                <form class="ui form">
+                    <table class="table_form">
+                        <tr> 
+                            <td>
+                                <label>PREFIX</label><br>
+                                <input type="text" id = "prefix"/></td>
+                            <td>
+                            <td>
+                                <label>NUMERO DE DEBUT</label><br>
+                                <input type="number" id = "n_min" placeholder ="NUMERO #"/>
+                            </td>
+                            <td>
+                                <label>NBRE DE PAGE(S)</label><br>
+                                <select id="npages">
+                                    <option value=""></option>
+                                    <% for(let i=1; i<=100; i++){ %>
+                                    <option value="<%= i %>"> <%=i %></option>
+                                    <% } %>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <br>
+                <form class="ui form">
+                    <div class="ui input">
+                        <input type="button" class="ui button" id="btn_generer_codebar" value="GENERER BARCODE"/>
+                    </div>
+                
+                    <div class="ui input">
+                        <input type="button" class="ui button" id="print" value="IMPRIMER BARCODE"/>
+                    </div>
+                </form>
+                <table id="tbl_barcode" style="margin-top:0; padding-top:0px;"></table>
+            </div>
+        </div>
+    </div>
+    <div class="four wide column" id="feature">
+        <div class="ui vertical fluid right tabular menu">
+            <a class="item active"  alt="14x4">
+                masque 14x4
+            </a>
+            <a class="item"  alt="13x5">
+                masque 13x5
+            </a>
+            <a class="item" alt="12x5">
+                masque 12x5
+            </a>
+        </div>
+    </div>
+</div>
+
+
+</div> 
+</div>
+
+<%- include("./footer.ejs")%>

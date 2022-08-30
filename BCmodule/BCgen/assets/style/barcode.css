@@ -1,0 +1,51 @@
+#tbl_barcode tr:first-child td { 
+	margin-top:0px;
+	padding-top:0px;
+}
+header {
+    margin:0px 0px 0px 0px;
+    padding-top:0px;
+}
+#tbl_barcode{
+	margin-top:0px;
+	padding-top:0px;
+	height:100%;
+	width:100%;
+	text-align:center;
+	border-collapse: collapse;
+}
+
+#tbl_barcode td{
+	background:#fff;
+	text-align:center;
+	vertical-align: middle;
+}
+
+ 
+
+@media print {
+  body {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+}
+
+
+
+@page{   
+	
+    margin: 0mm 0mm 1mm 0mm;  
+    
+}
+
+th, td {
+    padding: 7px;
+}
+@media print{
+  body {
+  margin-top:0mm !important;
+  padding-top:0 !important;
+  
+  }
+}

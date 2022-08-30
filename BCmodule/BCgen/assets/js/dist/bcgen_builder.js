@@ -1,0 +1,32 @@
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./assets/js/bcgen.js":
+/*!****************************!*\
+  !*** ./assets/js/bcgen.js ***!
+  \****************************/
+/***/ (() => {
+
+eval("/**\n * barcode  generator  module  \n * Authors  :  Mamadou Diop   2020-2021 \n *             Mame Astou Gassama  2022   \n *             Umar  Ba            2022  \n * copyright (C) 2022, Avanlanche BioSoftware Corporation   \n */\n\n\nlet {log} = console  \nlog(\"js bc ->\" ,JsBarcode)  \nconst  _=document   \n\nlet  { masks, paragraph_advice , n_min , prefix , npages ,  bcgenbtn , bctable , suggest}   = htmlVirtual_DOM_select  = { \n    masks  :  [..._.querySelectorAll(\"div > a.item\")].splice(-3) , \n    paragraph_advice  :  _.querySelectorAll(\"p\")[0] ,  \n    n_nim  : _.querySelector(\"#n_min\") , prefix  : _.querySelector(\"prefix\") , npages:_.querySelector(\"#npages\") ,\n    bcgenbtn :_.querySelector(\"#btn_generer_codebar\") , \n    bctable  :_.querySelector(\"#tbl_barcode\") , \n    suggest  :_.querySelector(\"#suggested\")  \n} \n\nconst  JBC_SETTING = {  \n    width : 1.3,\n    height: 29.1,\n    fontSize:15,\n    margin:10,\n    textPosition:\"top\" \n} \nlet height = 0 \nlet width  = 0 \nconst bcgen_logical  = { \n    paragraph_advice_change  : data  => { \n        const lookup_patern = /\\d+/g \n        let  text = paragraph_advice.textContent \n        data = data.split(\"x\") \n        const [ h , w ]  =data  \n        let  digit_match  =  text.match(lookup_patern) \n        text = text.replace(digit_match[0],h) \n        text = text.replace(digit_match[1],w) \n         height = parseInt(h) \n         width  = parseInt(w) \n        paragraph_advice.textContent = text  \n    } , \n    \n    \"#_active_mask\" : () =>   masks.filter(mask =>  mask.classList.contains(\"active\")).at(0) ,  \n    masks_apply :() => {  \n        \n        masks.map(mask =>  { \n            mask.addEventListener(\"click\" , evt  => { \n                evt.preventDefault()  \n                if ( !mask.classList.contains(\"active\")) \n                {\n                    bcgen_logical[\"#_active_mask\"]().classList.remove(\"active\") \n                    mask.classList.add(\"active\")  \n                    const  mask_params  =  mask.attributes.alt.nodeValue  \n                     \n                    bcgen_logical.paragraph_advice_change(mask_params)  \n                }\n            }) \n        })\n    },  \n    \n    calculate_total_page :  npages_requested =>   height * parseInt(npages_requested) ,   \n    \n    bcmatrix_customizer  : id  => { //,  style_string)  => { \n       return  `<tr> <td style=\"margin-top:10px\"> <svg id=\"barcode${id}\"></svg></td>` \n    }, \n    \n    build_bcmatrix    :  ( height ,  width )  =>  { \n        let table_row =\"<tr>\"\n        for (let row = 0;  row < height  ; row++) \n        {\n            for (let column= 0 ; column <  width ;  column++ )  \n            {\n                let identifier  = column.toString() + row.toString()  \n                table_row +=bcgen_logical.bcmatrix_customizer(identifier)  \n            }\n            table_row+=\"</tr>\"\n        } \n        bctable.innexHtml = table_row  \n    } ,   \n    \n    bcmatrix_inscribe_barcode  : ( height , width ,  customizable_logic_callback )  => {\n\n        nmin = parseInt(n_min.value.trim()) \n        prefix= prefix.value.trim()  \n        \n        for (let row = 0;  row < height  ; row++) \n        {\n            for (let column= 0 ; column <  width ;  column++ )  \n            {\n                let identifier  = column.toString() + row.toString()  \n                JsBarcode(`#barcode${identifier}` ,  prefix +nmin.toString()  , { ...JBC_SETTING})  \n            } \n\n            if  (customizable_logic_callback)  \n            {\n                customizable_logic_callback(nmin)  \n            }else  \n            nmin =  nmin +1  \n\n        }  \n        \n        if  (nmin) \n        {\n            bcgen_logical.startwith(nmin)  \n            _.querySelector(\"#btnFillNext\").addEventListener(\"click\" ,  evt => {  \n                n_min.value =  nmin  \n            }) \n        }\n    },\n\n    startwith :  new_nmin_serie  => {  \n        let suggest_content = `<button id=\"btnFillNext\" style=\"font-size:1.5em; font-weight:400; color:#4183c4!important; margin-bottom:10px;\" \n        class=\"ui basic button\" >'+'Commencez la prochaine impression avec le numero'+'<i class=\"right arrow icon\">'+'</i>&nbsp;'+thatNumber+'</button>`\n        suggest.innertHtml=suggest_content  \n\n    } , \n\n    barcode_generator :  () => { \n        bcgenbtn.addEventListener(\"click\", evt =>   {\n            bctable.innertHtml=\"\" \n            tpages  = bcgen_logical.calculate_total_page(npages)  \n            bcgen_logical.build_bcmatrix(height, width)   \n            bcgen_logical.bcmatrix_inscribe_barcode(height ,  width ,  false )  \n        }) \n    }  , \n\n\n    main : () =>  { \n         \n        bcgen_logical.masks_apply()  \n        //bcgen_logical.barcode_generator()\n        //bcgen_logical.bcgen_printer() \n        \n\n    } \n\n}\n\n\nbcgen_logical.main() \n\n\n//# sourceURL=webpack://barcodegenerator/./assets/js/bcgen.js?");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__["./assets/js/bcgen.js"]();
+/******/ 	
+/******/ })()
+;

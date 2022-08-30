@@ -1,0 +1,37 @@
+{
+  "name": "barcodegenerator",
+  "version": "1.1.0",
+  "description": "costomizable  barcode and more ...",
+  "main": "bcgen_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon bcgen_server.js",
+    "hotreload": "pm2 start bcgen_server.js --watch",
+    "compile": "webpack",
+    "build": "webpack ; npm run watch",
+    "wpserve": "webpack serve",
+    "pm2": "pm2 start bcgen_server.js",
+    "logs": "pm2 logs",
+    "monit": "pm2 monit"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avalanche-org/toolbox.git#main"
+  },
+  "keywords": [
+    "barcode-generator"
+  ],
+  "author": "umar <jukoo>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avalanche-org/toolbox/issues"
+  },
+  "homepage": "https://github.com/avalanche-org/toolbox/tree/main#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}

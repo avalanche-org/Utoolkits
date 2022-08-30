@@ -1,0 +1,5 @@
+barcodegenerator/
+node_modules/
+package-lock.json 
+assets/semantic/
+assets/js/dist/

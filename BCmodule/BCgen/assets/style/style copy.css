@@ -1,0 +1,168 @@
+.container{
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+    "logo nav nav nav"
+    "content content content content"
+    "content content content content"
+    "footer footer footer footer"
+    ;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: 1fr 0.5fr 8fr 0.5fr;
+}
+   
+.logo{
+    grid-area: logo;
+    /*background-color: rgb(243, 11, 11);*/
+}
+.navigation{
+    grid-area: nav;
+    margin-right: 5px;
+    grid-template-rows: repeat(2fr,3);
+    grid-template-areas: 
+    "blank_space"
+    "navigation_bar"
+    "blank_space";
+
+    /*background-color: rgb(199, 121, 182);*/
+}
+.content{
+    margin: 10px 20px 10px 356px;
+    grid-area: content;
+   /* background-color: rgb(211, 211, 211);*/
+}
+
+/*.feature{
+    grid-area: feature;
+    background-color: rgb(236, 219, 60);
+}*/
+.footer{
+    grid-area: footer;
+    background-color: rgb(68, 61, 61);
+}
+.menu_navbar {
+    grid-area: navigation_bar;
+}
+.blank_space{
+    grid-area: blank_space;
+    /*background-color:#777;*/
+    height: 2cm;
+}
+#mylogo {
+    margin-top: 8px;
+    border-radius:50%;
+    width:60%;
+    box-shadow: 0px 0px 1px black;
+}
+
+/********** The navigation bar and items style *********/
+
+.ui.secondary.pointing.menu {
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom: 2px solid rgba(34,36,38,.15);
+    background: rgba(68, 81, 103, .1);
+    border-top-right-radius: 39px;
+    border-bottom-right-radius: 116px;
+    border-top-left-radius: 116px;
+    border-bottom-left-radius: 39px;
+    font-family: "Trebuchet MS","Lucida Grande","Lucida Sans Unicode","Lucida Sans","Tahoma,sans-serif";
+    font-weight: bold;
+    font-size: 17px;
+    color: rgba(68, 81, 103, 1);
+}
+.ui.secondary.pointing.menu .item{
+    color: rgba(68, 81, 103, 1);
+}
+.ui.secondary.pointing.menu .item:hover {
+    border-bottom: solid rgba(255,0,0,0.6) 3px;
+    border-radius: 3px;  
+    font-family: "Trebuchet MS","Lucida Grande","Lucida Sans Unicode","Lucida Sans","Tahoma,sans-serif";
+
+}
+.ui.secondary.pointing.menu .active.item {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-weight: 700;
+    color: white;
+    background: rgba(68,81,103, 1);
+    border-bottom: solid rgba(255,0,0,0.6) 5px;
+    border-right: solid rgba(255,0,0,0.5) 1px;
+    border-radius: 20%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 113px;
+    border-top-left-radius: 116px;
+    border-bottom-left-radius: 116px;
+}
+.ui.secondary.pointing.menu .active.item:hover {
+    font-weight: 700;
+    color: rgba(0,0,0,.95);
+    background: white;
+    border-bottom: solid rgba(255,0,0,0.7) 5px;
+    border-radius: 20%;
+    border-top-right-radius: 116px;
+    border-bottom-right-radius: 116px;
+    border-top-left-radius: 116px;
+    border-bottom-left-radius: 116px;
+}
+
+#logout_Button{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-weight: 400;
+    color: white;
+    background-color: rgba(0,0,0,.95);
+    border-radius: 20%;    
+    border-top-right-radius: 44px;
+    border-bottom-right-radius: 147px;
+    border-top-left-radius: 154px;
+    border-bottom-left-radius: 90px;
+}
+#logout_Button:hover{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-weight: 700;
+    color: black;
+    background-color: rgba(255,0,0,.95);
+    border-radius: 20%;    
+    border-top-right-radius: 44px;
+    border-bottom-right-radius: 147px;
+    border-top-left-radius: 154px;
+    border-bottom-left-radius: 90px;
+}
+
+/********** The feature bar and items style *********/
+.menu_right_tabular {
+    background: none transparent;
+    border-radius: 0;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    border-bottom: none;
+    border-right: none;
+    border-left: 1px solid #d4d4d5;
+}
+
+.item_right_tabular_menu {
+    font-weight: bold;
+    font-size: 14px; 
+    color: rgba(68, 81, 103, 1);
+
+}
+.item_right_tabular_menu :active {
+    background: none #fff;
+    color: rgba(0,0,0,.95);
+    border-color: #d4d4d5;
+    margin: 0 0 0 -1px;
+    border-radius: 0 113px 116px 0!important;
+    border-bottom: solid rgba(68, 81, 103, .1) 6px;
+    border-left: solid rgba(68, 81, 103, .1) 0px;
+    border-right: solid rgba(68, 81, 103, .1) 0px;
+}
+
+/********** navbar item Content's display *********/
+.itemContent{
+    display: none;
+    padding: 6px 12px;
+    /* border: 1px solid #ccc;*/
+    border-top: none;
+}
