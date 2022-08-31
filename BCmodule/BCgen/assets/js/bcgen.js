@@ -8,12 +8,14 @@
 
 
 let {log} = console  
-log("js bc ->" ,JsBarcode)  
-const  _=document   
 
+const  _=document   
 let  { 
     masks, paragraph_advice , n_min , prefix , npages ,  
-    bcgenbtn , bctable , suggest , header_title_applied_mask,bcprinter} = htmlVirtual_DOM_select  = { 
+    bcgenbtn , bctable , suggest , header_title_applied_mask,bcprinter, 
+    bc_colorpicker
+
+    } = htmlVirtual_DOM_select  = { 
     masks  :  [..._.querySelectorAll("div > a.item")].splice(-3) , 
     paragraph_advice  :  _.querySelectorAll("p")[0] ,  
     n_min  : _.querySelector("#n_min") , prefix  : _.querySelector("#prefix") , npages:_.querySelector("#npages") ,
@@ -21,11 +23,12 @@ let  {
     bctable  :_.querySelector("#tbl_barcode") , 
     suggest  :_.querySelector("#suggested") , 
     header_title_applied_mask  : _.querySelectorAll("h1")[0],  
-    bcprinter: _.querySelector("#print") 
+    bcprinter: _.querySelector("#print"), 
+    bc_colorpicker : _.querySelector("input[type='color']")  
 } 
 
 const  JBC_SETTING = { 
-    //format:"code128",
+    format:"code128",
     width : 1.3,
     height: 29.1,
     fontSize:15,
@@ -34,7 +37,7 @@ const  JBC_SETTING = {
 } 
 let height = 0 
 let width  = 0 
-
+let barcode_rgba_color = []   
 
 const bcgen_logical  = { 
 
@@ -83,7 +86,7 @@ const bcgen_logical  = {
         td.style.maginTop = "10px"  
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 
-        svg.setAttribute("stroke", "rgba(107, 119, 230, 1)")
+        svg.setAttribute("stroke", `rgba(${barcode_rgba_color.at(0)}, ${barcode_rgba_color.at(1)}, ${barcode_rgba_color.at(2)}, 0.5)`)
         svg.setAttribute("id" , `barcode${id}`)   
         td.appendChild(svg)  
         
@@ -105,14 +108,11 @@ const bcgen_logical  = {
     
             bctable.appendChild(table_row)  
         } 
-         
-         
     } ,   
     
     bcmatrix_inscribe_barcode  : ( height , width ,  customizable_logic_callback )  => {
 
         nmin = parseInt(n_min.value.trim())
-        log("nmin" ,  nmin ) 
         
         for (let row = 0;  row < height  ; row++) 
         {
@@ -134,7 +134,6 @@ const bcgen_logical  = {
         {
             if ( bcgen_logical.startwith(nmin)) 
             {
-                 log ("true") 
                 _.querySelector("#btnFillNext").addEventListener("click" ,  evt => {  
                     n_min.value =  nmin  
                 })
@@ -175,7 +174,8 @@ const bcgen_logical  = {
 
     preload : ()  =>  {   
         const dimension_property =  bcgen_logical["#_active_mask"]() 
-        bcgen_logical.paragraph_advice_change(dimension_property.attributes.alt.nodeValue) 
+        bcgen_logical.paragraph_advice_change(dimension_property.attributes.alt.nodeValue)  
+        barcode_rgba_color  = bcgen_logical["#convert2decimalebase"](bc_colorpicker.value) 
         
     } , 
 
@@ -194,16 +194,34 @@ const bcgen_logical  = {
         }) 
 
     } ,  
+
     main : () =>  { 
         
         bcgen_logical.preload()  
         bcgen_logical.masks_apply()  
         bcgen_logical.barcode_generator()
         bcgen_logical.bcgen_printer() 
+        bcgen_logical.bcgen_colorstyle() 
         
 
-    } 
+    },  
 
+    "#convert2decimalebase" : hex_base => { 
+        const base  =  hex_base.slice(1).match(/.{1,2}/g) 
+        let rgb_code = base.map(b=>  `0x${b}`)
+                           .map(hex2dec => parseInt(hex2dec))  
+        return rgb_code
+        
+        
+    } , 
+    bcgen_colorstyle : ()  => {  
+        
+        bc_colorpicker.addEventListener("change" , evt =>  { 
+            barcode_rgba_color  = bcgen_logical["#convert2decimalebase"](evt.target.value) 
+            
+             
+        }) 
+    } 
 }
 
 
