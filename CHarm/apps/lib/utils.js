@@ -71,8 +71,15 @@ module
         
         filename_shortcut = filename_target.split("/").at(-1)  
 
-        cmdline =`python3 ${script_loc} -f ${filename_target}` 
-        cmdproc = exec(cmdline) 
+     
+        cmdline =`python3 ${script_loc} -f "${filename_target}"` 
+
+        cmdproc = exec(cmdline  , ( error  , stdout , stderr ) => { 
+            if  (error)  
+            {
+                log(error)  
+            }
+        }) 
         cmdproc.on( "close" ,  ( exit_code , signal ) =>  { 
             
             log("exit code " , exit_code )  

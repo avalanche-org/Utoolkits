@@ -112,7 +112,24 @@ def main  ()  :
     if  sprdsheat is  None :  
         sys.exit(1) 
     
-    filename =  sprdsheat.split("/")[-1]  
+    filename =  sprdsheat.split("/")[-1] 
+    
+    print("filename entry " , filename , "-> ",  sprdsheat  ) 
+    if  sprdsheat.__contains__(" ")  : #  handle  white space  
+        reformated_sprdsheat :str  = sprdsheat.replace(" " , "_")  
+        
+        __in   , __out    =  ( os.open(sprdsheat , os.O_RDONLY  )  , os.open(reformated_sprdsheat  , os.O_WRONLY|os.O_CREAT ))  
+        assert  __in.__gt__(0) and __out.__gt__(0)  , "in and  out  pipe stream failed !\n"  
+        size__in  =  os.stat(__in).st_size 
+        __in_data =  os.read(__in ,  size__in )  
+        os.write(__out ,  __in_data) 
+     
+        os.close(__in) 
+        os.close(__out)  
+
+        sprdsheat = reformated_sprdsheat 
+        filename  = sprdsheat.split("/")[-1] 
+
     
     charm =  CHarm(sprdsheat) 
 
