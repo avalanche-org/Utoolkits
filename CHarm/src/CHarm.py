@@ -21,17 +21,30 @@ required_vars = [
             'sexe','telphone'
             ]
 
+def __unidecode_error_hdl ( __target_F  )   : 
+    
+    def  code_hdl_byte  (  *args , **kwargs )  : 
+        try :  
+            __target_F(*args , **kwargs )
+        except  UnicodeDecodeError  : 
+            kwargs.__setitem__("encoding",  "unicode_escape")  
+            __target_F(*args  ,**kwargs) 
+        
+    return code_hdl_byte
+
+
 def CHARM__  ( charm  , spreadsheet  )  :
     charm._xlsx  = spreadsheet 
     charm._headers = None
     charm.automake_df()  
     
-
-def automake_df(charm ,  sep=";" , low_memory =False )   : 
-    sprdsheat_dataframe =  pd.read_csv( charm._xlsx , sep=sep , low_memory = low_memory)  
-    charm._headers  = sprdsheat_dataframe.columns.values 
-    charm._xlsx =  sprdsheat_dataframe   
-
+@__unidecode_error_hdl  
+def automake_df(charm ,  sep=";" , low_memory =False , **kwargs )   : 
+    sprdsheat_dataframe =  pd.read_csv( charm._xlsx , sep=sep , low_memory = low_memory,**kwargs)  
+    charm._headers  = sprdsheat_dataframe.columns.values  
+    source_file  = charm._xlsx  
+    charm._xlsx =  sprdsheat_dataframe
+    
 @property  
 def headers (charm )  : 
     return  charm._headers  
