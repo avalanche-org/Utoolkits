@@ -84,7 +84,8 @@ module
                         if  (error)  throw  error  
                         let corrected_file   =  dirent.filter ( dirent =>  dirent["isFile"]())
                             .filter(file =>  file.name.startsWith("CH@")) 
-
+                        
+                        // that trigger automaticly  the download  event  ! 
                         socket.emit("charm::done" ,  [ corrected_file.at(0).name , filename_target] )    
                 }) 
                     break 
@@ -97,6 +98,12 @@ module
         
     }, 
     
+    /*  autoclean : clean  automaticly the uploaded file  and  generated file  
+     *              when the is downloaded  
+     *  @param   string  :  generated file  come from the  python script 
+     *  @param   string  :  file origine uploaded  by the user end point used to generate 
+     *                      <generated_file>  
+     */
     ["autoclean"]  :   (  generated_file  , origne )  => {
         
         const destroy  = [  generated_file , origne ]  
