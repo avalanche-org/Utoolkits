@@ -21,7 +21,7 @@ const  _=document
 let  { 
     masks, paragraph_advice , n_min , prefix , npages ,  
     bcgenbtn , bctable , suggest , header_title_applied_mask,bcprinter, 
-    bc_colorpicker, bc_colorpicker_status   
+    bc_colorpicker, bc_colorpicker_status, pattern_repeat   
 
     } = htmlVirtual_DOM_select  = { 
     masks  :  [..._.querySelectorAll("div > a.item")].splice(-3) , 
@@ -33,7 +33,8 @@ let  {
     header_title_applied_mask  : _.querySelectorAll("h1")[0],  
     bcprinter: _.querySelector("#print"), 
     bc_colorpicker : _.querySelector("input[type='color']"),
-    bc_colorpicker_status  : _.querySelector("#enable_or_disable_sbc") 
+    bc_colorpicker_status  : _.querySelector("#enable_or_disable_sbc"), 
+    pattern_repeat : _.querySelector("#patern_repeat")  
 } 
 
 const  JBC_SETTING = { 
@@ -121,8 +122,9 @@ const bcgen_logical  = {
         } 
     } ,   
     
-    bcmatrix_inscribe_barcode  : ( height , width ,  customizable_logic_callback )  => {
+    bcmatrix_inscribe_barcode  : ( height , width , repeate_per_row )  => {
 
+        let  repeat = 0  
         nmin = parseInt(n_min.value.trim())
         
         for (let row = 0;  row < height  ; row++) 
@@ -132,12 +134,27 @@ const bcgen_logical  = {
                 let identifier  = column.toString() + row.toString() 
                 JsBarcode("#barcode"+identifier ,  prefix.value+nmin.toString()   , JBC_SETTING)  
             } 
+            
+            if  (repeate_per_row)  
+            {
+                repeat++
+                if(repeat == repeate_per_row )  
+                {
+                    nmin +=1 
+                    repeat = 0 
+                }else
+                    nmin=nmin
+
+            }else   
+                nmin  = nmin + 1 
+      
             /*
+             *
             if  (customizable_logic_callback)  
             {
                 customizable_logic_callback(nmin)  
             }else*/   
-            nmin =  nmin +1  
+            //nmin =  nmin +1  
 
         }  
         
@@ -150,8 +167,15 @@ const bcgen_logical  = {
                 })
             }
         }
-    },
-
+    },  
+    bc_patern_repeat_ctrl  : () => {
+       
+        log (pattern_repeat.value) 
+        let a =  parseInt(pattern_repeat.value.trim()) || false 
+        log(a) 
+        return a 
+        
+    },  
     startwith :  new_nmin_serie  => { 
         if   ( [...suggest.childNodes].length == 1 )  
         {
@@ -179,7 +203,7 @@ const bcgen_logical  = {
             
             bcgen_logical.build_bcmatrix(height, width)   
             
-            bcgen_logical.bcmatrix_inscribe_barcode(height ,  width ,  false )  
+            bcgen_logical.bcmatrix_inscribe_barcode(height ,  width ,  bcgen_logical.bc_patern_repeat_ctrl())  
         }) 
     }  , 
 
