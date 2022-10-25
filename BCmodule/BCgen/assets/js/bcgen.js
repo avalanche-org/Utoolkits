@@ -3,7 +3,15 @@
  * Authors  :  Mamadou Diop   2020-2021 
  *             Mame Astou Gassama  2022   
  *             Umar  Ba            2022  
- * copyright (C) 2022, Avanlanche BioSoftware Corporation   
+ * copyright (C) 2022, Avanlanche BioSoftware Corporation  
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 
@@ -13,7 +21,7 @@ const  _=document
 let  { 
     masks, paragraph_advice , n_min , prefix , npages ,  
     bcgenbtn , bctable , suggest , header_title_applied_mask,bcprinter, 
-    bc_colorpicker
+    bc_colorpicker, bc_colorpicker_status   
 
     } = htmlVirtual_DOM_select  = { 
     masks  :  [..._.querySelectorAll("div > a.item")].splice(-3) , 
@@ -24,7 +32,8 @@ let  {
     suggest  :_.querySelector("#suggested") , 
     header_title_applied_mask  : _.querySelectorAll("h1")[0],  
     bcprinter: _.querySelector("#print"), 
-    bc_colorpicker : _.querySelector("input[type='color']")  
+    bc_colorpicker : _.querySelector("input[type='color']"),
+    bc_colorpicker_status  : _.querySelector("#enable_or_disable_sbc") 
 } 
 
 const  JBC_SETTING = { 
@@ -34,10 +43,12 @@ const  JBC_SETTING = {
     fontSize:15,
     margin:10,
     textPosition:"top" 
+  
 } 
 let height = 0 
 let width  = 0 
-let barcode_rgba_color = []   
+let barcode_rgba_color = [] 
+let stroke_status  =  bc_colorpicker_status.checked 
 
 const bcgen_logical  = { 
 
@@ -86,7 +97,7 @@ const bcgen_logical  = {
         td.style.maginTop = "10px"  
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 
-        svg.setAttribute("stroke", `rgba(${barcode_rgba_color.at(0)}, ${barcode_rgba_color.at(1)}, ${barcode_rgba_color.at(2)}, 0.5)`)
+        if (stroke_status) svg.setAttribute("stroke", `rgba(${barcode_rgba_color.at(0)}, ${barcode_rgba_color.at(1)}, ${barcode_rgba_color.at(2)}, 0.5)`)
         svg.setAttribute("id" , `barcode${id}`)   
         td.appendChild(svg)  
         
@@ -195,6 +206,11 @@ const bcgen_logical  = {
 
     } ,  
 
+    bc_draw_stroke  :  __status    => { 
+         bc_colorpicker_status.addEventListener("change" ,  evt => { 
+             __status  =  evt.target.checked ||  evt.target.checked 
+         })
+    }, 
     main : () =>  { 
         
         bcgen_logical.preload()  
@@ -202,7 +218,7 @@ const bcgen_logical  = {
         bcgen_logical.barcode_generator()
         bcgen_logical.bcgen_printer() 
         bcgen_logical.bcgen_colorstyle() 
-        
+        bcgen_logical.bc_draw_stroke(stroke_status)   
 
     },  
 
