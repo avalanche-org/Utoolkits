@@ -1,10 +1,10 @@
-<img src="images/barcodelogo.png" width=""  height="100" alt="barcodelogo" style="margin-right:20px;border-radius:35px"  align="right"/>
+<img src="images/barcodelogo.jpg" width=""  height="200" alt="barcodelogo" style="margin-right:20px;border-radius:35px"  align="right"/>
 
 
 <h2>Barcode Generator</h2>
 <div  align="center">
 <b>Utility  tool for  Barcode </b></br>
- <a href="https://github.com/avalanche-org/toolbox/tree/main/BCmodule"><img src ='https://img.shields.io/badge/Barcode-Scanner-teal?style=for-the-badge&logo=appveyor'/></a><p>
+ <a href="https://github.com/avalanche-org/toolbox/tree/main/BCmodule"><img src ='https://img.shields.io/badge/Barcode-Generator [////]-teal?style=for-the-badge&logo=appveyor'/></a><p>
 </div>
 
 ### About  
